@@ -26,14 +26,19 @@ function init() {
 
   // ロボットの作成
   const robots = new THREE.Group();
-  for (let x = -4; x < 5; x++){
-      for (let z = -4; z < 5; z++){
-      const robot = makeMetalRobot();
-      robot.position.x=x*6;
-      robot.position.z=z*6;
-      robot.rotation.y = Math.atan2(x,z);
-      robots.add(robot);
-    }
+  for (let x = -4; x < 5; x++) {
+      for (let z = -4; z < 5; z++) {
+          let robot;
+          if (Math.random() < 0.25) {  
+              robot = makeCBRobot();  
+          } else {
+              robot = makeMetalRobot();
+          }
+          robot.position.x = x * 6;
+          robot.position.z = z * 6;
+          robot.rotation.y = Math.atan2(x, z);
+          robots.add(robot);
+      }
   }
   scene.add(robots);
 
@@ -64,6 +69,7 @@ function init() {
     robots.children.forEach((robot)=>{
       robot.rotation.y 
       = (robot.rotation.y + 0.01) % (2 * Math.PI)
+      robot.position.y = Math.sin(robot.rotation.y);
     });
     renderer.render(scene, camera);
     requestAnimationFrame(render);
